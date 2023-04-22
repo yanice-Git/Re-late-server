@@ -7,7 +7,6 @@ import { PrismaClient } from "@prisma/client"
 dotenv.config()
 
 const app = fastify()
-const port = Process.env.PORT || 3000
 app.register(sensible)
 app.register(cookie, { secret: process.env.COOKIE_SECRET })
 app.register(cors, {
@@ -38,6 +37,17 @@ const COMMENT_SELECT_FIELDS = {
         },
     },
 }
+
+app.get("/", async (req, res) => {
+    return await commitToDb(
+        prisma.post.findMany({
+            select: {
+                id: true,
+                title: true,
+            },
+        })
+    )
+})
 
 app.get("/posts", async (req, res) => {
     return await commitToDb(
@@ -194,4 +204,4 @@ async function commitToDb(promise) {
     return data
 }
 
-app.listen({ port })
+app.listen({ port: process.env.PORT })
