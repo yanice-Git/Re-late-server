@@ -7,6 +7,7 @@ import { PrismaClient } from "@prisma/client"
 dotenv.config()
 
 const app = fastify()
+const port = Process.env.PORT || 3000
 app.register(sensible)
 app.register(cookie, { secret: process.env.COOKIE_SECRET })
 app.register(cors, {
@@ -193,4 +194,4 @@ async function commitToDb(promise) {
     return data
 }
 
-app.listen({ port: process.env.PORT })
+app.listen({ port })
