@@ -38,6 +38,18 @@ const COMMENT_SELECT_FIELDS = {
     },
 }
 
+
+app.get("/featured", async (req, res) => {
+    return await commitToDb(
+        prisma.post.findFirst({
+            where: { title: "Nouran Post" },
+            select: {
+                message: true,
+            },
+        })
+    )
+})
+
 app.get("/", async (req, res) => {
     return await commitToDb(
         prisma.post.findMany({
